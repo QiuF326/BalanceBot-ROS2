@@ -1,0 +1,32 @@
+cat > .gitignore <<'EOF'
+# Build
+build/
+install/
+log/
+
+# CMake
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# STM32 build
+Debug/
+Release/
+
+# Temporary files
+*.swp
+*.tmp
+*~
+EOF
