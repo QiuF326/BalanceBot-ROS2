@@ -1,0 +1,361 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>平衡车控制台</title><style>
+:root{color-scheme:light;--ink:#183440;--muted:#647b86;--line:#dce7eb;--teal:#087f81;--bg:#eef4f5;--red:#c23847}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:14px;line-height:1.6}
+button,input{font:inherit}button{cursor:pointer;touch-action:manipulation;border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:#fff;color:var(--ink);font-weight:600;transition:background .15s,transform .15s}
+button:hover:enabled{background:#f0f8f8}button:active:enabled{transform:translateY(1px)}button:disabled{opacity:.4;cursor:default}button:focus-visible,input:focus-visible{outline:3px solid #31b9b9;outline-offset:3px}
+button.primary{background:var(--teal);border-color:var(--teal);color:#fff}button.primary:hover:enabled{background:#066a6c}
+button.danger{background:var(--red);border-color:var(--red);color:#fff}button.subtle{background:transparent}
+header{background:#132d3a;color:#fff;padding:25px max(20px,calc((100vw - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:13px}.brandmark{display:grid;place-items:center;width:43px;height:43px;border-radius:14px;background:#244553;color:#7ee0d1;font-size:23px;font-weight:800}
+h1{font-size:19px;letter-spacing:.06em;margin:0}.subtitle{font-size:11px;color:#a0b6c0;letter-spacing:.12em}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:30px;background:#244553;font-size:12px;white-space:nowrap}.dot{width:7px;height:7px;border-radius:50%;background:#87a0ab}.dot.online{background:#71d5b6}
+main{max-width:1160px;margin:0 auto;padding:27px 20px 36px}.intro{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+h2{margin:0;font-size:25px;letter-spacing:.02em}.intro p{margin:4px 0 0;color:var(--muted)}.eyebrow{font-size:11px;letter-spacing:.13em;color:var(--teal);font-weight:800}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:start}.stack{display:grid;gap:20px}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 5px 22px #19374404}
+.cardhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}h3{margin:0;font-size:17px}.step{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em}
+p{margin:9px 0}.muted,.hint{color:var(--muted)}.hint{font-size:12px}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.row>*{flex:1}.row .fixed{flex:0 0 auto}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:17px 0 9px}.role{padding:15px 8px;text-align:left;min-width:0}.role strong{display:block;font-size:14px}.role small{display:block;font-size:10px;color:var(--muted);letter-spacing:.04em}.role em{display:block;font-style:normal;font-size:11px;margin-top:12px;color:var(--teal)}
+.role.selected{background:#e9f7f4;border-color:#1c9f92;box-shadow:0 0 0 1px #1c9f92}.role.selected em{font-weight:800}
+details{border-top:1px solid var(--line);margin-top:16px;padding-top:12px}summary{cursor:pointer;font-size:12px;color:var(--muted)}details .row{margin-top:10px}
+.status{font-size:12px;padding:5px 10px;border-radius:8px;background:#edf6f5;color:var(--teal);font-weight:700}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{padding:15px;background:#f3f7f8;border-radius:13px}.metric span{display:block;color:var(--muted);font-size:11px}.metric strong{font-size:31px;font-variant-numeric:tabular-nums;line-height:1.5;letter-spacing:-.04em}.metric small{font-size:11px;color:var(--muted);margin-left:5px}
+.topic{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #edf1f3;font-size:12px}.topic code{font-size:12px;color:var(--teal)}.topic:last-child{border:0}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:330px;margin:16px auto}.pad button{min-height:58px;font-size:14px}.pad .up{grid-column:2}.pad .left{grid-column:1}.pad .center{background:#eaf4f4;color:var(--teal)}.pad .down{grid-column:2}
+.axis{padding-top:12px}.axis label{display:flex;justify-content:space-between;font-size:12px}.axis output{font-variant-numeric:tabular-nums;color:var(--teal);font-weight:700}input[type=range]{width:100%;accent-color:var(--teal);height:30px}
+.voicecard{background:linear-gradient(145deg,#fff 65%,#eef9f6)}.voicestate{display:flex;align-items:center;gap:15px;margin:18px 0}.micicon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:#e8f4f1;color:var(--teal)}.micicon svg{width:26px;height:26px}
+.voicecopy strong{font-size:16px}.voicecopy p{font-size:12px;color:var(--muted);margin:1px 0}.transcript{min-height:64px;background:#f2f7f7;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:16px}.transcript small{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em}
+.commands{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.commands span{border:1px solid #dce9e6;padding:3px 9px;border-radius:7px;font-size:12px;color:#416963}
+.banner{padding:13px 16px;border:1px solid #cfdfdf;border-radius:12px;background:#f8fbfb;font-size:13px;margin-bottom:20px;overflow-wrap:anywhere}.banner.error{background:#fff2f1;border-color:#f1cbc7;color:#aa303a}
+.safetybar{border-top:1px solid var(--line);margin-top:17px;padding-top:16px;display:grid;grid-template-columns:1fr auto;gap:9px}.safetybar .danger{min-height:54px;font-size:16px}
+footer{margin-top:21px;color:var(--muted);font-size:11px;text-align:center}pre{font-size:10px;max-height:260px;overflow:auto;background:#f3f7f8;padding:12px;border-radius:10px}
+.collision{border:1px solid #b9d9d0;background:#f2faf6;border-radius:18px;padding:18px 20px;margin-bottom:20px}.collision.alert{background:#fff7e6;border-color:#dfbe77}.collision.stop{background:#fff0ef;border-color:#e5a5a0}.collision .cardhead{margin-bottom:7px}.collision .status{background:#fff}.radar-zones{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.radar-zone{background:#ffffffb0;padding:8px 12px;border-radius:10px}.radar-zone span{display:block;font-size:11px;color:var(--muted)}.radar-zone b{font-size:16px;font-variant-numeric:tabular-nums}.collision p{margin:5px 0}
+[hidden]{display:none!important}@media(max-width:720px){header{padding:18px 17px}main{padding:20px 14px}.grid{grid-template-columns:1fr;gap:15px}.stack{gap:15px}.card{padding:19px;border-radius:17px}.intro{align-items:start}h2{font-size:22px}.intro p{font-size:12px}.intro>.eyebrow{display:none}.roles{gap:7px}.role{padding:13px 8px}.metric strong{font-size:29px}.brand h1{font-size:17px}.subtitle{font-size:9px}}
+
+body{background:#edf2f4}header{padding:13px 20px}.brandmark{width:34px;height:34px;border-radius:11px}.brand h1{font-size:17px}main{max-width:980px;padding:16px 18px 90px}
+.connection-panel{margin:0 0 12px;background:#fff;border:1px solid var(--line);padding:12px 16px;border-radius:15px}.connection-panel>summary{font-size:14px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between}
+.connection-panel>summary:after{content:'更换角色 ›';font-size:12px;color:var(--teal)}.connection-panel .roles{grid-template-columns:repeat(3,1fr);margin:10px 0}.role{padding:10px 8px}.role strong{font-size:13px}.role small{display:none}.role em{font-size:10px}.grid{gap:14px}.stack{gap:14px}.card{padding:17px 20px}.cardhead{margin-bottom:8px}
+.collision{padding:13px 16px;margin-bottom:14px;border-radius:16px}.radar-zones{gap:6px;margin:9px 0}.radar-zone{padding:9px 8px;text-align:center}.radar-zone b{font-size:23px;line-height:1.5}.radar-zone small{display:block;min-height:16px;font-size:10px;color:#6b7d88}.radar-zone.old{background:#fff5e3;color:#996012}.collision p{font-size:11px;line-height:1.5}#collisionReason{margin:0}.banner{padding:9px 13px;font-size:12px;margin-bottom:12px}
+.mode-switch{display:flex;justify-content:space-between;align-items:center;background:#f2f6f7;border-radius:10px;padding:9px 12px;font-size:12px}.mode-switch label{display:flex;gap:7px;align-items:center;cursor:pointer}.mode-switch input{accent-color:#d38b20;width:18px;height:18px}.mode-note{min-height:32px;margin:8px 0 0;color:#5c6f79;font-size:11px}.escape-on .mode-switch{background:#fff0d7;color:#91510b}.escape-on .pad button:not(.center){background:#fff2db;border-color:#e5bd76;color:#985308}
+.pad{margin:10px auto;gap:8px;max-width:290px}.pad button{min-height:64px;font-size:16px;border-radius:16px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:background .08s,transform .08s}.pad button:active:not(:disabled),.pad button.pressed{transform:scale(.94);background:#cdebe5;border-color:#147465}.pad .center{font-size:13px;background:#e1efed}.pad .down{grid-column:2}
+.voicecard .voicestate{margin:8px 0}.voicecard .micicon{width:36px;height:36px;border-radius:11px}.voicecard .voicecopy strong{font-size:14px}.voicecard .transcript{min-height:46px;margin:10px 0;font-size:15px}.voicecard .commands{margin:7px 0}.voicecard .commands span{font-size:11px;padding:2px 6px}#voiceFeedback{font-size:12px;margin:7px 0}.voice-toggle{width:100%;min-height:43px}details.diagnostics{margin-top:9px}details.diagnostics summary{font-size:11px}
+.safety-dock{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:10px max(16px,calc((100vw - 944px)/2));background:#f7faf9ee;backdrop-filter:blur(12px);border-top:1px solid #d4e1e2;display:flex;gap:10px}.safety-dock button{min-height:47px;flex:1;font-size:15px}.safety-dock #reset{flex:0 0 120px}.row button.subtle{min-height:30px}.axis{padding-top:5px}.metrics .metric strong{font-size:23px}.metrics .metric{padding:8px}footer{font-size:10px}
+@media(max-width:720px){header{padding:11px 15px}main{padding:12px 12px 86px}.grid{display:flex;flex-direction:column;gap:12px}.stack{display:contents}.card{padding:14px 16px;border-radius:16px}.role{padding:9px 6px}.role strong{font-size:12px}.collision{padding:11px 12px}.radar-zone b{font-size:21px}.pad button{min-height:58px}.cardhead h3{font-size:15px}.connection-panel{padding:10px 13px}.pill{font-size:11px}.mode-note{min-height:28px}}
+</style></head><body>
+<header><div class="brand"><div class="brandmark">启</div><div><h1>平衡车控制台</h1></div></div><div class="pill"><span class="dot" id="connectionDot"></span><span id="connection">连接中</span></div></header>
+<main>
+<details id="connectionPanel" class="connection-panel" open>
+<summary><span id="roleHint">选择本机角色</span></summary>
+<div class="roles"><button class="role" data-role="FULL"><strong>单机全控</strong><em>可分配</em></button><button class="role" data-role="LINEAR"><strong>前后控制</strong><em>可分配</em></button><button class="role" data-role="ANGULAR"><strong>转向控制</strong><em>可分配</em></button></div>
+<details class="diagnostics"><summary>连接管理 / 原协同模式</summary><div class="row"><button id="join" class="subtle">连接控制台</button><button id="leave" class="subtle" disabled>断开</button><button id="releaseRole" class="subtle" disabled>释放角色</button></div><div class="row"><button data-role="LEFT">LEFT</button><button data-role="RIGHT">RIGHT</button></div></details>
+</details>
+<div id="message" class="banner" role="status" aria-live="polite">正在连接服务…</div>
+<section id="collisionBox" class="collision" aria-label="雷达距离">
+<div class="cardhead"><h3>周围距离</h3><span id="collisionStatus" class="status">等待读数</span></div>
+<div class="radar-zones">
+<div class="radar-zone" id="zone-front"><span>前方</span><b id="radar-front">—</b><small id="age-front">尚无读数</small></div>
+<div class="radar-zone" id="zone-rear"><span>后方</span><b id="radar-rear">—</b><small id="age-rear">尚无读数</small></div>
+<div class="radar-zone" id="zone-left"><span>左侧</span><b id="radar-left">—</b><small id="age-left">尚无读数</small></div>
+<div class="radar-zone" id="zone-right"><span>右侧</span><b id="radar-right">—</b><small id="age-right">尚无读数</small></div>
+</div><p id="collisionReason" role="status">等待雷达数据</p><p class="hint" id="radarFreshness"></p>
+<details class="diagnostics"><summary>保护阈值与提醒</summary><p id="collisionThresholds"></p><p id="collisionEvent"></p><button id="enableAlerts" class="subtle">开启提示音</button></details>
+</section>
+<div class="grid"><div class="stack">
+<section class="card" id="driveCard"><div class="cardhead"><h3>驾驶</h3><span class="status" id="slot">等待分配</span></div>
+<div class="mode-switch"><span id="controlHint">点击方向运行，中央停止</span><label><input type="checkbox" id="escapeMode">人工脱困</label></div>
+<p class="mode-note" id="takeoverStatus" role="status">普通防撞模式</p>
+<div class="pad" id="directionPad">
+<button class="up" data-direction="forward" aria-label="前进" disabled>↑</button>
+<button class="left" data-direction="left" aria-label="左转" disabled>←</button>
+<button class="center" id="stop" disabled>停止</button>
+<button data-direction="right" aria-label="右转" disabled>→</button>
+<button class="down" data-direction="backward" aria-label="后退" disabled>↓</button>
+</div>
+<details class="diagnostics"><summary>精细输入</summary><div class="axis" id="linearAxis"><label for="linearSlider">前后<output id="linearValue">0%</output></label><input id="linearSlider" type="range" min="-1" max="1" step=".05" value="0" disabled></div><div class="axis" id="angularAxis"><label for="angularSlider">转向<output id="angularValue">0%</output></label><input id="angularSlider" type="range" min="-1" max="1" step=".05" value="0" disabled></div></details>
+</section></div><div class="stack">
+<section class="card voicecard"><div class="cardhead"><h3>语音驾驶</h3><span id="mic" class="hint">麦克风已关闭</span></div>
+<p class="hint" id="voiceHint">分配角色后，开启持续收音</p>
+<button id="startVoice" class="primary voice-toggle" disabled>开启语音</button><button id="stopVoice" class="voice-toggle" hidden disabled>关闭语音</button>
+<div class="transcript"><small id="speechKind">等待口令</small><span id="speech">—</span></div>
+<p id="voiceFeedback" role="status">等待口令</p>
+<details class="diagnostics"><summary>口令与识别状态</summary><div class="commands"><span>前进</span><span>后退</span><span>左转</span><span>右转</span><span>加速</span><span>减速</span><span>停止</span><span>急停</span></div><p id="voiceStrength" class="hint"></p><p id="capabilities" class="hint"></p><p id="mode" class="hint"></p><div class="topic"><span>解码 / 音频年龄</span><span id="audioTiming">—</span></div><div class="topic"><span>恢复 / 丢帧</span><span id="audioRecovery">—</span></div></details>
+</section>
+<details class="card diagnostics"><summary>运行状态 · <span id="runtimeMode">启动中</span></summary><div class="metrics"><div class="metric"><span>前后输出</span><strong id="linearOut">0</strong></div><div class="metric"><span>转向输出</span><strong id="angularOut">0</strong></div></div><div class="topic"><span>话题</span><span id="topic"></span></div><div class="topic"><span>Domain / 发布频率</span><span id="rosInfo"></span></div><div class="topic"><span>保护</span><span id="safety"></span></div><div class="topic"><span>底盘回报</span><span id="measuredMotion"></span></div><div class="topic"><span>前向读数</span><span id="frontDistance"></span></div><pre id="raw"></pre></details>
+</div></div>
+<footer>本地语音 · 双端协同 · 2026.10.30-final.2</footer></main>
+<div class="safety-dock"><button id="estop" class="danger" disabled>整车急停</button><button id="reset" disabled>人工复位</button></div>
+<script src="/collision-alerts.js"></script>
+<script src="/control-session.js"></script>
+<script>
+'use strict';
+const newClientId=()=>globalThis.crypto&&crypto.randomUUID?crypto.randomUUID():'phone_'+Math.random().toString(16).slice(2);
+let clientId=newClientId();
+const $ = id => document.getElementById(id);
+const labels = {FULL:'单机全控',LINEAR:'前后控制',ANGULAR:'转向控制',LEFT:'LEFT 协同',RIGHT:'RIGHT 协同'};
+let connected=false, slot=null, myEpoch=null, mic=null, starting=false, startGeneration=0, heartbeatBusy=false;
+let commandBusy=false, pendingCommand=null, errorUntil=0, noticeUntil=0;
+let modeBusy=false,serverEscapeMode=false,lastShownRole=null,lastStateTick=-1,lastStateInstance=null;
+const collisionNotifier=new CollisionNotifier();
+let alertContext=null,alertsEnabled=false;
+async function enableCollisionAlerts(){
+  const Audio=window.AudioContext||window.webkitAudioContext;
+  if(!Audio)return;
+  if(!alertContext)alertContext=new Audio();
+  await alertContext.resume();alertsEnabled=true;
+  $('enableAlerts').textContent='提示音已开启 · 点击关闭';
+}
+function collisionBeep(){
+  if(!alertsEnabled||!alertContext||alertContext.state!=='running')return;
+  try{
+  const now=alertContext.currentTime;
+  for(const offset of [0,.22]){
+    const tone=alertContext.createOscillator(),gain=alertContext.createGain();
+    tone.frequency.value=880;gain.gain.setValueAtTime(.06,now+offset);
+    gain.gain.exponentialRampToValueAtTime(.001,now+offset+.14);
+    tone.connect(gain);gain.connect(alertContext.destination);tone.start(now+offset);tone.stop(now+offset+.15);
+  }
+  }catch(e){/* Notification failures must never interrupt control heartbeats. */}
+}
+function renderCollision(c){
+  if(!c){$('collisionReason').textContent='服务器尚未提供防撞状态';return;}
+  const names={CLEAR:'实时更新',WARNING:'障碍预警',SLOW:'防撞限速',STOP:(c.action==='STOP'||c.awaiting_new_command)?'防撞停车':'近距离障碍',NO_DATA:c.scan_age_ms===null?'等待雷达':'回传间歇',PARTIAL:'部分方向不可用',WAIT_COMMAND:'等待新指令',DISABLED:'保护已关闭'};
+  $('collisionStatus').textContent=names[c.status]||c.status;
+  $('collisionReason').textContent=c.message;
+  $('collisionBox').classList.toggle('stop',['STOP','NO_DATA','WAIT_COMMAND'].includes(c.status));
+  $('collisionBox').classList.toggle('alert',['WARNING','SLOW','PARTIAL','DISABLED'].includes(c.status));
+  for(const key of ['front','rear','left','right']){
+    const current=c.distances[key],value=c.last_distances?c.last_distances[key]:current;
+    const age=c.distance_age_ms?c.distance_age_ms[key]:c.scan_age_ms;
+    const known=typeof value==='number'&&Number.isFinite(value),old=!c.fresh||current===null||(age!==null&&age>500);
+    $('radar-'+key).textContent=known?(value*100).toFixed(0)+' cm':'—';
+    $('age-'+key).textContent=!known?'尚无读数':old?'旧读数 · '+(age===null?'时间未知':(age/1000).toFixed(1)+'秒前'):'刚刚 · '+Math.round(age||0)+'ms';
+    $('zone-'+key).classList.toggle('old',known&&old);
+  }
+  const front=c.thresholds_by_direction?c.thresholds_by_direction.front:c.thresholds;
+  const side=c.thresholds_by_direction?c.thresholds_by_direction.left:c.thresholds;
+  const distances=t=>[t.warning,t.slowdown,t.stop].map(v=>Number((v*100).toFixed(1))+'cm').join(' / ');
+  $('collisionThresholds').textContent='预警 / 限速 / 停车：前后 '+distances(front)+'；左右 '+distances(side)+'。均为雷达原点距离；车头方向 '+c.front_degrees+'°';
+  $('radarFreshness').textContent=!c.enabled?'防撞保护已关闭':c.fresh?'雷达 '+(c.scan_hz||'—')+' Hz · '+Math.round(c.scan_age_ms)+'ms 前更新':c.scan_age_ms===null?'尚未收到小车扫描':'最新扫描 '+(c.scan_age_ms/1000).toFixed(1)+'秒前；保留旧读数供观察，旧读数不代表当前位置';
+  $('collisionEvent').textContent=c.last_event?'最近提醒：'+c.last_event.message:'';
+  const event=collisionNotifier.observe(c);
+  if(event&&connected){collisionBeep();try{if(navigator.vibrate)navigator.vibrate([150,80,150]);}catch(e){}}
+}
+$('enableAlerts').onclick=()=>safe(async()=>{
+  if(alertsEnabled){alertsEnabled=false;$('enableAlerts').textContent='开启提示音';}
+  else{await enableCollisionAlerts();collisionBeep();}
+});
+function message(text,error=false) {
+  $('message').textContent=text; $('message').classList.toggle('error',error);
+  if(error) errorUntil=Date.now()+7000;
+}
+function notice(text) { if(Date.now()>noticeUntil) {message(text);noticeUntil=Date.now()+3000;} }
+function render(r) {
+  const instance=r.collision&&r.collision.instance_id;
+  if(instance!==lastStateInstance){lastStateInstance=instance;lastStateTick=-1;}
+  if(typeof r.state_tick==='number'){
+    if(r.state_tick<lastStateTick)return;
+    lastStateTick=r.state_tick;
+  }
+  connected=!!r.connected;slot=r.my_slot||null;session.observe(r);
+  myEpoch=r.my_epoch===null?null:Math.max(myEpoch||0,r.my_epoch||0);
+  $('connection').textContent=connected?'终端已连接':'服务可用';
+  $('connectionDot').classList.add('online');
+  renderCollision(r.collision);
+  $('join').disabled=connected;$('leave').disabled=!connected;$('releaseRole').disabled=!slot;
+  $('join').textContent=connected?'已连接':session.role?'连接并恢复'+labels[session.role]:'连接控制台';
+  $('slot').textContent=slot||'等待分配';$('roleHint').textContent=slot?'本端 · '+labels[slot]:connected?'已连接，请选择角色':'直接点选下方角色即可连接';
+  if(slot!==lastShownRole){$('connectionPanel').open=!slot;lastShownRole=slot;}
+  const compatible={FULL:[],LINEAR:['ANGULAR'],ANGULAR:['LINEAR'],LEFT:['RIGHT'],RIGHT:['LEFT']};
+  const peers=Object.entries(r.slots).filter(([role,id])=>id&&id!==clientId).map(([role])=>role);
+  document.querySelectorAll('[data-role]').forEach(b=>{
+    const role=b.dataset.role, owner=r.slots[role], mine=slot===role;
+    b.disabled=!mine&&((owner&&owner!==clientId)||peers.some(p=>!compatible[role].includes(p)));
+    b.classList.toggle('selected',mine);
+    const e=b.querySelector('em');if(e)e.textContent=mine?'本端已分配':owner?'已被占用':b.disabled&&connected?'角色冲突':'可分配';
+  });
+  const legacy=slot==='LEFT'||slot==='RIGHT', canLinear=!!slot&&slot!=='ANGULAR', canAngular=slot==='FULL'||slot==='ANGULAR';
+  const escapeMode=!!(r.driving_mode&&r.driving_mode.escape);
+  serverEscapeMode=escapeMode;
+  $('escapeMode').checked=escapeMode;$('escapeMode').disabled=!slot||modeBusy;
+  $('driveCard').classList.toggle('escape-on',escapeMode);
+  $('takeoverStatus').textContent=escapeMode?'人工脱困：语音和按键均旁路雷达；点击运行，停止键归零。':'点击方向持续运行，中央停止；雷达保护开启。';
+  if(escapeMode){
+    $('collisionStatus').textContent=r.collision&&r.collision.fresh?'仅监测 · 人工脱困':'等待雷达 · 已旁路';
+    $('collisionReason').textContent='人工脱困已开启，雷达仅显示距离，无数据或近障均不拦截；请目视驾驶。';
+  }
+  $('linearAxis').hidden=!canLinear;$('angularAxis').hidden=!canAngular;
+  $('linearSlider').disabled=!canLinear||r.estop||modeBusy;$('angularSlider').disabled=!canAngular||r.estop||modeBusy;
+  $('stop').disabled=!slot;$('estop').disabled=!connected;$('reset').disabled=!slot||!r.estop;
+  $('reset').hidden=!r.estop;
+  document.querySelectorAll('[data-direction]').forEach(b=>b.disabled=r.estop||modeBusy||(['forward','backward'].includes(b.dataset.direction)?!canLinear:!canAngular));
+  $('controlHint').textContent=legacy?'原协同模式':slot==='LINEAR'?'本端：前后':slot==='ANGULAR'?'本端：转向':slot==='FULL'?'本端：全控':'先选择角色';
+  const inp=r.my_input||{};
+  for(const axis of ['linear','angular']) {
+    const value=legacy?inp.value:inp[axis];
+    if(document.activeElement!==$(axis+'Slider'))$(axis+'Slider').value=value||0;
+    $(axis+'Value').textContent=Math.round((value||0)*100)+'%';
+  }
+  $('startVoice').disabled=!slot||!!mic||starting||r.estop||modeBusy;$('stopVoice').disabled=!mic&&!starting;
+  $('startVoice').hidden=!!mic||starting;$('stopVoice').hidden=!mic&&!starting;
+  $('speech').textContent=r.speech||'—';$('speechKind').textContent=r.speech_kind==='partial'?'流式中间结果':r.speech?'已确认口令':'等待口令';
+  $('voiceFeedback').textContent=r.voice_feedback||'等待口令';
+  $('mode').textContent=r.fast_partial?'识别模式：稳定中间结果触发运动，停止 / 急停优先触发。':'识别模式：运动等待最终结果。';
+  if(mic)$('mic').textContent=r.audio.audio_status||'持续采集中';
+  $('audioTiming').textContent=Number(r.audio.decode_ms||0).toFixed(1)+' / '+Number(r.audio.queue_ms||0).toFixed(1)+' ms';
+  $('audioRecovery').textContent=(r.audio.audio_recoveries||0)+' / '+(r.audio.dropped_frames||0);
+  const rt=r.runtime;$('runtimeMode').textContent=rt.mode==='ROS2'?(rt.agent_listener===false?'Agent 未连接':'ROS2 已接入'):rt.mode==='DRY_RUN'?'仅模拟输出':'初始化';
+  const gains=r.voice_settings||{linear:rt.voice_linear,angular:rt.voice_angular};
+  $('voiceStrength').textContent='当前语音力度：前后 '+Math.round(gains.linear*100)+'% · 转向 '+Math.round(gains.angular*100)+'%';
+  const feedback=r.feedback||{};
+  $('measuredMotion').textContent=feedback.odom?Number(feedback.odom[0]).toFixed(3)+' / '+Number(feedback.odom[1]).toFixed(3):'暂无新数据';
+  $('frontDistance').textContent=feedback.front_distance_m===null||feedback.front_distance_m===undefined?'暂无有效数据':Number(feedback.front_distance_m).toFixed(2)+' m';
+  $('topic').textContent='/'+rt.cmd_topic.replace(/^\//,'');$('rosInfo').textContent=rt.domain_id+' / '+rt.publish_hz+' Hz';
+  $('linearOut').textContent=Number(r.last_cmd.linear_x).toFixed(2);$('angularOut').textContent=Number(r.last_cmd.angular_z).toFixed(2);
+  $('safety').textContent=r.estop?'急停锁定':rt.publisher_state!=='RUNNING'?'发布器 '+rt.publisher_state:r.safety_state==='NORMAL'?'正常':r.safety_state;
+  $('raw').textContent=JSON.stringify(r,null,2);
+  if(Date.now()>errorUntil&&Date.now()>noticeUntil)message(r.message||'服务就绪');
+  if(!slot&&mic)stopVoice();
+}
+async function request(path,options={}) {
+  const requestedClient=clientId;
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),2000);
+  try {
+    const response=await fetch(path,{...options,signal:controller.signal});
+    const r=await response.json();if(!r.ok)throw new Error(r.error||'服务请求失败');
+    if(requestedClient===clientId)render(r);return r;
+  } finally {clearTimeout(timer);}
+}
+async function api(action,extra={}) {
+  return request('/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({client_id:clientId,...extra})});
+}
+function safe(action){return action().catch(e=>message(e.message,true));}
+let preferenceStorage=null;try{preferenceStorage=window.localStorage;}catch(e){}
+const session=new ControlSession({api,storage:preferenceStorage,beforeConnect:async wasConnected=>{
+  pendingCommand=null;await stopVoice();myEpoch=null;
+  if(!wasConnected)clientId=newClientId();
+}});
+$('join').onclick=()=>safe(async()=>{await enableCollisionAlerts().catch(()=>{});await session.connect();});
+$('leave').onclick=()=>safe(async()=>{pendingCommand=null;await stopVoice();await session.disconnect();});
+$('releaseRole').onclick=()=>safe(async()=>{pendingCommand=null;await stopVoice();await session.release();});
+document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>safe(async()=>{
+  await enableCollisionAlerts().catch(()=>{});await session.connect(b.dataset.role);
+}));
+$('stop').onclick=()=>safe(async()=>{pendingCommand=null;await api('stop');});
+$('estop').onclick=()=>safe(async()=>{pendingCommand=null;await api('estop');});
+$('reset').onclick=()=>safe(()=>api('reset'));
+async function sendCommand(command) {
+  pendingCommand=command;if(commandBusy)return;commandBusy=true;
+  try {while(pendingCommand){const current=pendingCommand;pendingCommand=null;await api('cmd',{...current,epoch:myEpoch});}}
+  catch(e){pendingCommand=null;message(e.message,true);}finally{commandBusy=false;}
+}
+function axisInput() {
+  if(modeBusy)return;
+  const linear=Number($('linearSlider').value),angular=Number($('angularSlider').value);
+  $('linearValue').textContent=Math.round(linear*100)+'%';$('angularValue').textContent=Math.round(angular*100)+'%';
+  sendCommand(slot==='LEFT'||slot==='RIGHT'?{value:linear}:{linear:slot==='ANGULAR'?0:linear,angular:slot==='LINEAR'?0:angular});
+}
+$('linearSlider').oninput=axisInput;$('angularSlider').oninput=axisInput;
+
+function sendDirection(d){
+  if(!slot||modeBusy)return;
+  const v=d==='forward'?.35:d==='backward'?-.35:0,w=d==='left'?.5:d==='right'?-.5:0;
+  message(({forward:'前进',backward:'后退',left:'左转',right:'右转'})[d]+' · 正在发送');
+  sendCommand(slot==='LEFT'||slot==='RIGHT'?{value:v}:{linear:v,angular:w});
+}
+document.querySelectorAll('[data-direction]').forEach(b=>{
+  b.onpointerdown=e=>{e.preventDefault();sendDirection(b.dataset.direction);};
+  b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sendDirection(b.dataset.direction);}};
+});
+$('escapeMode').onchange=()=>safe(async()=>{
+  const enabled=$('escapeMode').checked;
+  pendingCommand=null;modeBusy=true;$('escapeMode').disabled=true;
+  document.querySelectorAll('[data-direction]').forEach(b=>b.disabled=true);
+  $('linearSlider').disabled=$('angularSlider').disabled=$('startVoice').disabled=true;
+  let response=null;
+  try{response=await api('escape-mode',{enabled,epoch:myEpoch});}
+  finally{
+    modeBusy=false;$('escapeMode').checked=serverEscapeMode;$('escapeMode').disabled=!slot;
+    if(response)render(response);else await poll();
+  }
+});
+async function poll(){
+  if(heartbeatBusy||session.busy||document.hidden)return;heartbeatBusy=true;
+  const polledClient=clientId;let reconnecting=false;
+  try {
+    if(connected)await api('heartbeat');
+    else if(session.shouldReconnect()){reconnecting=true;await session.connect();}
+    else await request('/state?client_id='+encodeURIComponent(clientId));
+  }
+  catch(e){
+    if(!reconnecting&&polledClient!==clientId)return;
+    if(reconnecting&&session.connected){message('已连接，上次角色暂不可用：'+e.message+'；请选择其他角色',true);return;}
+    connected=false;slot=null;myEpoch=null;pendingCommand=null;session.lost();
+    $('connection').textContent=session.enabled?'正在重新连接':'连接中断';$('connectionDot').classList.remove('online');
+    message('连接暂不可用：'+e.message+'；恢复后只连接角色，请重新发出指令',true);await stopVoice();
+  }
+  finally{heartbeatBusy=false;}
+}
+setInterval(poll,250);poll();
+$('capabilities').textContent='HTTPS 安全环境：'+(window.isSecureContext?'可用':'不可用')+'；麦克风接口：'+(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia?'可用':'不可用')+'；AudioWorklet：'+(window.AudioWorkletNode?'可用':'不可用');
+async function stopVoice(){
+  ++startGeneration;const old=mic;mic=null;
+  if(old){
+    if(old.ws){old.ws.onclose=old.ws.onerror=null;old.ws.close();}
+    if(old.node){old.node.port.onmessage=null;old.node.disconnect();}
+    if(old.source)old.source.disconnect();
+    if(old.stream)old.stream.getTracks().forEach(t=>t.stop());
+    if(old.ctx)await old.ctx.close().catch(()=>{});
+    if(connected)await api('voice-stop').catch(()=>{});
+  }
+  $('mic').textContent='麦克风已关闭';$('voiceHint').textContent='点击开启后，持续识别短口令';
+  $('startVoice').disabled=!slot||starting;$('stopVoice').disabled=true;
+}
+async function startVoice(){
+  if(mic||starting)return;
+  if(!slot)throw new Error('请先连接并分配角色');
+  if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('麦克风需要受信任的 HTTPS；请完成手机证书信任设置');
+  starting=true;const generation=++startGeneration;
+  const resources={ws:null,ctx:null,stream:null,node:null,source:null,tick:null,sequence:0};
+  mic=resources;$('startVoice').disabled=true;$('stopVoice').disabled=false;$('mic').textContent='正在启动麦克风…';
+  try{
+    const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+    resources.ctx=new AudioContextClass({latencyHint:'interactive'});await resources.ctx.resume();
+    resources.stream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});
+    if(generation!==startGeneration)throw new Error('语音启动已取消');
+    if(!resources.ctx.audioWorklet)throw new Error('当前浏览器不支持 AudioWorklet');
+    await resources.ctx.audioWorklet.addModule('/pcm-worklet.js');
+    const ws=resources.ws=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host+'/audio?client_id='+encodeURIComponent(clientId));
+    ws.onmessage=event=>{const r=JSON.parse(event.data);if(r.type==='tick')resources.tick=r.stamp;};
+    await new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(new Error('音频连接超时')),8000);
+      ws.onopen=()=>{clearTimeout(timer);resolve();};ws.onerror=ws.onclose=()=>{clearTimeout(timer);reject(new Error('音频连接失败，请检查服务状态'));};
+    });
+    if(generation!==startGeneration)throw new Error('语音启动已取消');
+    ws.onclose=()=>safe(async()=>{await stopVoice();message('语音连接已关闭，请检查连接后重新开启',true);});
+    ws.onerror=()=>safe(async()=>{await stopVoice();message('语音连接发生错误',true);});
+    resources.node=new AudioWorkletNode(resources.ctx,'pcm16-stream');
+    resources.node.port.onmessage=event=>{
+      if(mic!==resources||ws.readyState!==WebSocket.OPEN||resources.tick===null)return;
+      if(resources.ctx.currentTime-event.data.at>.2||ws.bufferedAmount>4096){notice('正在跳过积压音频，麦克风保持开启');return;}
+      const packet=new ArrayBuffer(12+event.data.pcm.byteLength),view=new DataView(packet);
+      view.setFloat64(0,resources.tick,true);view.setUint32(8,resources.sequence++>>>0,true);
+      new Uint8Array(packet,12).set(new Uint8Array(event.data.pcm));ws.send(packet);
+    };
+    resources.source=resources.ctx.createMediaStreamSource(resources.stream);resources.source.connect(resources.node);resources.node.connect(resources.ctx.destination);
+    resources.stream.getTracks().forEach(t=>t.onended=()=>{if(mic===resources)stopVoice();});
+    resources.ctx.onstatechange=()=>{if(mic===resources&&resources.ctx.state==='suspended')safe(async()=>{await stopVoice();message('系统暂停了麦克风，请保持页面在前台',true);});};
+    $('mic').textContent='持续采集中';$('voiceHint').textContent=labels[slot]+' · 只更新本端负责的输入';
+  }catch(e){
+    if(mic===resources)await stopVoice();else{if(resources.stream)resources.stream.getTracks().forEach(t=>t.stop());if(resources.ctx)await resources.ctx.close().catch(()=>{});}
+    message(e.name==='NotAllowedError'?'麦克风授权被拒绝，请在浏览器中允许访问':e.message,true);
+  }finally{starting=false;$('startVoice').disabled=!slot||!!mic;}
+}
+$('startVoice').onclick=()=>safe(startVoice);$('stopVoice').onclick=()=>safe(stopVoice);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(connected){pendingCommand=null;stopVoice();if(slot)safe(()=>api('stop'));}}});
+window.addEventListener('pagehide',()=>{
+
+  if(mic){if(mic.stream)mic.stream.getTracks().forEach(t=>t.stop());if(mic.ws)mic.ws.close();}
+  navigator.sendBeacon('/leave',new Blob([JSON.stringify({client_id:clientId})],{type:'application/json'}));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "version": "2026.10.30-final.2",
+  "tests": {
+    "python_humble": 130,
+    "node_suites": 3
+  },
+  "files": {
+    "dual_control_voice_server.py": "f95abff00890934921417caec1a1d58a65a9bce122c135b6fbed930c8096d205",
+    "manual_takeover.py": "f392b74c2332e6313078dbe690be7f3e67834b9ad7cdb5df6d9738e1012bf828",
+    "scan_decoder.py": "ad4d20dc08d7aa78b57a60ad3bd64be77f89951bb44a7f9abb424f22dee6ea4d",
+    "agent_runner.py": "d10b0c36642cf60c066d911f93634479799b828b9088929d258b4d1a3c1f019f",
+    "control_launcher.py": "ff7849af21e6a18b4d338af84fd2713f404b01f84207b954640386aee52f38f9",
+    "access_window.py": "c8e6719a5a569d6213ee84f55a7d07729f6854eaee58f99f9acce3831d38e861",
+    "index.html": "c5e5ce5f59b028a02d4716a29077213f11579063ab4e6235db315474b9250062",
+    "collision_guard.py": "eae1ef0223c666616507c3c81d4684e27391849a6de5a44f07e1ca72cc73dc29",
+    "collision-alerts.js": "2c13ead90367da4d54d55b06e1b5c8d262e89947a54d08d02deb84ed356d5c5f",
+    "control-session.js": "08cb97c438b7d50a4eb566bf5d9b62b93831d61c280f382c5fae7bbe620ac68e",
+    "pcm-worklet.js": "aa49e56d72b1a521fda9473f09683df7249f98e4f2e583d3f99c4df90960433a",
+    "serve_certificates.py": "1bfe9d07cb407d68834881d432f16ceeb478499135bd2a001be1f1fb3e1c1278",
+    "test_voice_control.py": "48122daa2179b6bfd359d0e213f635c4164fdcee95508093fb61a3d0e2b2bb57",
+    "test_collision_guard.py": "bfc3b16b974b92f85c10afa3c37859f8b99cea1fd0075b31b800a4988404c1b0",
+    "test_final_control.py": "9f24f4419b71c399da33e9b072e28954ad5d2af0e5ac30cdd12f356f663f17ca",
+    "test_access.py": "1ecf5f2a91d489aa4f414dedf70a088d02fed6be33889443b9ff1b9bae0e08f4",
+    "test_audio_worklet.cjs": "b2c2581bf3af3629c55b1b627cff92c93a77d318aae2ccb482270eab645c3eb5",
+    "test_collision_alerts.cjs": "1789edfeeed72085377339e5ee40736dfd39b893d013e2e6b3480a813704972a",
+    "test_control_session.cjs": "9232c9316559ae5441beae65ad261aef50efa8e55d47c6bf6569b5da8cddf41a",
+    "requirements.txt": "0a8ec1b9a1c878779ea45018ebdfca1850d53eed3260ea49c05d187fa4360433",
+    "start_control.sh": "2c250db60956449e2c37ba9d3dd7099721c770d97f849b5456b8c563ee67dee3",
+    "README.md": "ff6137ac71059dff9a227d19b449fb599263be7b2f44317641eb2273d9325e53",
+    "probe_real_audio.py": "aac20a9bba7c7a871a436608829d92e2485f65e7002b38b5187a97fbb1d091c9"
+  }
+}

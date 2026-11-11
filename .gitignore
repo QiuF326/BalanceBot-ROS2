@@ -1,32 +1,33 @@
-cat > .gitignore <<'EOF'
-# Build
+# ROS 2 and build output
 build/
 install/
 log/
-
-# CMake
+logs/
 cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
 
-# IDE
-.vscode/
-.idea/
-
-# Python
+# Local runtime state and dependencies
+run/
+setup-cache/
+certs/
+vosk-model-*/
+.venv/
+.test-deps/
+node_modules/
 __pycache__/
 *.pyc
 
-# OS
+# Editors and operating systems
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
-
-# STM32 build
-Debug/
-Release/
-
-# Temporary files
 *.swp
 *.tmp
 *~
-EOF
+
+# STM32 build output
+Debug/
+Release/
+OBJ/
